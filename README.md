@@ -1,72 +1,178 @@
-# Nexora
+<p align="center">
+  <img src="./data/ChatGPT%20Image%2014%20de%20mai.%20de%202026,%2015_52_41.png" alt="Nexora Banner"/>
+</p>
 
-Plataforma corporativa de inteligência operacional para ativos de TI. Visibilidade unificada sobre dispositivos, escritórios, ciclo de vida, software e postura de risco.
+<h1 align="center">Nexora</h1>
 
-## Stack
+<p align="center">
+  Plataforma corporativa de inteligência operacional para ativos e infraestrutura de TI.
+</p>
 
-- React 19 + Vite + Tailwind CSS
-- React Router 7, Recharts, Framer Motion, Lucide
-- PapaParse para import/export CSV
-- API local Express (Node.js) servindo dados sintéticos
+<p align="center">
+  Dashboard moderno • Gestão de ativos • Analytics • IA operacional
+</p>
 
-## Pré-requisitos
+---
 
-- Node.js 18 ou superior
+#  Sobre o Projeto
 
-## Instalação
+O Nexora é uma plataforma corporativa desenvolvida para centralizar informações operacionais, inventário tecnológico e indicadores estratégicos em um único ambiente moderno e intuitivo.
+
+A proposta do sistema é oferecer visibilidade completa sobre dispositivos, unidades, infraestrutura e postura operacional da empresa, permitindo tomadas de decisão mais rápidas e inteligentes.
+
+---
+
+# ✨ Funcionalidades
+
+- 📊 Dashboard executivo em tempo real
+- 🤖 Nexora AI integrada
+- 🖥️ Gestão de dispositivos
+- 🏢 Organização por unidades
+- 📈 Analytics operacionais
+- 🔒 Indicadores de risco e conformidade
+- 🌐 Sistema multilíngue (PT-BR / EN)
+- 📁 Relatórios operacionais
+- ⚡ Interface moderna e responsiva
+- 🎯 Experiência visual inspirada em plataformas enterprise
+
+---
+
+# 🧠 Objetivo
+
+O Nexora foi criado com foco em:
+
+- Centralização operacional
+- Gestão inteligente de ativos
+- Visualização estratégica
+- Escalabilidade corporativa
+- Automação e IA
+- Monitoramento organizacional
+
+---
+
+# 🛠️ Tecnologias Utilizadas
+
+## Frontend
+
+- React
+- TypeScript
+- TailwindCSS
+- Framer Motion
+- Recharts
+
+## Backend
+
+- Node.js
+- Express
+
+## Outros
+
+- REST API
+- Sistema de autenticação
+- Estrutura SaaS
+- Arquitetura escalável
+- Internacionalização (i18n)
+
+---
+
+# 📸 Interface
+
+## Tela de Login
+
+- Visual corporativo moderno
+- Sistema multilíngue
+- Conta de demonstração
+- Interface responsiva
+
+## Dashboard Executivo
+
+- KPIs estratégicos
+- Gráficos analíticos
+- Distribuição operacional
+- Indicadores em tempo real
+- Monitoramento centralizado
+
+---
+
+# 🎯 Diferenciais
+
+- UI/UX moderna e premium
+- Estrutura inspirada em soluções enterprise
+- Foco em performance visual
+- Arquitetura preparada para IA
+- Excelente projeto para portfólio profissional
+- Base sólida para evolução SaaS
+
+---
+
+# 📦 Instalação
 
 ```bash
+# Clone o projeto
+git clone https://github.com/LucasRosen0/nexora.git
+
+# Acesse a pasta
+cd nexora
+
+# Instale as dependências
 npm install
-cd server && npm install && cd ..
-```
 
-## Execução em desenvolvimento
-
-Em dois terminais:
-
-```bash
-# Terminal 1 — API local (porta 3000)
-npm run server
-
-# Terminal 2 — Vite (porta 5173, com proxy para 3000)
+# Rode o projeto
 npm run dev
 ```
 
-Acesse `http://localhost:5173`.
+---
 
-## Build de produção
+# 🔐 Status do Projeto
+
+🚧 Em desenvolvimento ativo
+
+## Próximas funcionalidades
+
+- Sistema real de autenticação
+- Integração com banco de dados
+- Nexora AI funcional
+- Gestão avançada de ativos
+- Exportação PDF/Excel
+- Tema Light/Dark
+- Controle de permissões (RBAC)
+- Notificações em tempo real
+- Integração com APIs externas
+
+---
+
+# 🤝 Contribuição
+
+Contribuições são bem-vindas.
 
 ```bash
-npm run build
-npm run server
+# Fork o projeto
+# Crie uma branch
+git checkout -b feature/minha-feature
+
+# Commit
+git commit -m "feat: nova funcionalidade"
+
+# Push
+git push origin feature/minha-feature
 ```
 
-O servidor Express servirá automaticamente o conteúdo de `dist/`.
+---
+---
 
-## Acesso de demonstração
+# 📈 Desenvolvimento Ativo
 
-A autenticação local de exemplo está pré-configurada:
+O Nexora está em desenvolvimento contínuo com melhorias frequentes, novas funcionalidades e evolução constante da plataforma.
 
-- **Email:** `admin@nexora.com`
-- **Senha:** `123456`
+<p align="center">
+  <img src="./data/0b17988b-c61c-4dc1-aa9e-354db3abe3f2.png" alt="GitHub Activity"/>
+</p>
+# 📄 Licença
 
-A sessão é mantida por 8 horas em `localStorage`.
+Este projeto está sob a licença MIT.
 
-## Fonte de dados
+---
 
-A versão atual utiliza dados sintéticos em `data/mock-data.json` carregados pela API Express. Conexões com banco de dados externo estão previstas em versão futura — a opção aparece em **Configurações → Fonte de dados** apenas como referência visual.
+# 👨‍💻 Autor
 
-## Estrutura
-
-```
-src/
-├── components/   componentes de marca, layout, UI e assistente
-├── pages/        Login, Overview, Devices, Locations, Analytics, Reports, Settings
-├── store/        Auth, Theme, I18n, Devices, Notes (React Context)
-├── i18n/         dicionários pt-BR e en
-├── lib/          api, csv, ai, format
-└── styles/       app.css com 5 temas corporativos
-
-server/           API Express local (mock)
-data/             mock-data.json
-```
+Desenvolvido por Lucas Roseno.
