@@ -165,12 +165,6 @@ git push origin feature/minha-feature
 ---
 ---
 
-# 📈 Desenvolvimento Ativo
-
-O Nexora está em desenvolvimento contínuo com melhorias frequentes, novas funcionalidades e evolução constante da plataforma.
-
-<p align="center">
-  <img src="./data/0b17988b-c61c-4dc1-aa9e-354db3abe3f2.png" alt="GitHub Activity"/>
 </p>
 # 📄 Licença
 
