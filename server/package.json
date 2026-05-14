@@ -1,0 +1,15 @@
+{
+  "name": "nexora-api",
+  "version": "1.0.0",
+  "description": "Local API for the Nexora platform (serves synthetic data + static build)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "license": "MIT",
+  "type": "commonjs",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1"
+  }
+}
