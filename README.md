@@ -1,7 +1,12 @@
 <p align="center">
   <img src="./data/ChatGPT%20Image%2014%20de%20mai.%20de%202026,%2015_52_41.png" alt="Nexora Banner"/>
 </p>
-
+<p align="center">
+  <img src="https://img.shields.io/badge/status-em%20desenvolvimento-5B5FFF?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/react-frontend-61DAFB?style=for-the-badge&logo=react"/>
+  <img src="https://img.shields.io/badge/node-backend-339933?style=for-the-badge&logo=node.js"/>
+  <img src="https://img.shields.io/badge/license-MIT-blue?style=for-the-badge"/>
+</p>
 <h1 align="center">Nexora</h1>
 
 <p align="center">
