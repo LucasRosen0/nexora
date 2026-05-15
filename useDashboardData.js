@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import demoOverviewData from './demoOverviewData';
+import { API_BASE } from './src/lib/api';
 
 export const useDashboardData = () => {
   const [data, setData] = useState(demoOverviewData);
@@ -13,11 +14,9 @@ export const useDashboardData = () => {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 3000);
 
-       clearTimeout(timeoutId);
-
-const result = {
-  data: []
-};
+        const response = await fetch(`${API_BASE}/machines?limit=5000`, { signal: controller.signal });
+        clearTimeout(timeoutId);
+        const result = await response.json();
 
         // Só desativamos o mock se a API de fato retornar máquinas
         if (result && result.data && result.data.length > 0) {

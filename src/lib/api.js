@@ -3,12 +3,12 @@
  * In dev, Vite proxies /api -> http://localhost:3000.
  */
 
-const API_BASE = (() => {
-  if (typeof window === 'undefined') return '/api';
-  // If we're served by the Express backend itself (port 3000), use relative.
-  // If we're on Vite dev (5173), proxy is configured to /api as well.
-  return '/api';
-})();
+// Se VITE_API_URL estiver definido no ambiente (Netlify), usa ele.
+// Caso contrário, usa '/api' (útil para o proxy local do Vite).
+const API_BASE = import.meta.env.VITE_API_URL || '/api';
+
+// Exportamos para uso em outros arquivos que chamam fetch diretamente
+export { API_BASE };
 
 async function request(path, options = {}) {
   const controller = new AbortController();
@@ -40,9 +40,7 @@ export function fetchMachines(params = {}) {
   Object.entries(params).forEach(([k, v]) => {
     if (v !== undefined && v !== null && v !== '') qs.set(k, String(v));
   });
-  return Promise.resolve({
-  data: []
-});
+  return request(`/machines?${qs.toString()}`);
 }
 
 export function fetchSoftware(params = {}) {
