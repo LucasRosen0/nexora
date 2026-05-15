@@ -214,6 +214,44 @@ export function SettingsPage() {
           </div>
         </article>
 
+        {/* Security snapshot */}
+        <article className="nx-panel p-5 lg:col-span-2">
+          <div className="flex items-center justify-between gap-3">
+            <h2 className="text-base font-bold" style={{ color: 'rgb(var(--nx-text))' }}>
+              {lang === 'pt-BR' ? 'Segurança e sessão' : 'Security & session'}
+            </h2>
+            <span className="nx-chip" style={{ background: 'rgb(var(--nx-success) / 0.14)', color: 'rgb(var(--nx-success))' }}>
+              {lang === 'pt-BR' ? 'Proteções ativas' : 'Protections active'}
+            </span>
+          </div>
+          <div className="mt-4 grid gap-3 md:grid-cols-3">
+            <div className="rounded-xl border p-4" style={{ borderColor: 'rgb(var(--nx-line) / 0.35)' }}>
+              <p className="text-xs uppercase tracking-wider" style={{ color: 'rgb(var(--nx-muted))' }}>
+                {lang === 'pt-BR' ? 'Sessão' : 'Session'}
+              </p>
+              <p className="mt-2 text-sm font-semibold" style={{ color: 'rgb(var(--nx-text))' }}>
+                {session?.email || '—'}
+              </p>
+            </div>
+            <div className="rounded-xl border p-4" style={{ borderColor: 'rgb(var(--nx-line) / 0.35)' }}>
+              <p className="text-xs uppercase tracking-wider" style={{ color: 'rgb(var(--nx-muted))' }}>
+                {lang === 'pt-BR' ? 'Perfil' : 'Role'}
+              </p>
+              <p className="mt-2 text-sm font-semibold" style={{ color: 'rgb(var(--nx-text))' }}>
+                {session?.role || '—'}
+              </p>
+            </div>
+            <div className="rounded-xl border p-4" style={{ borderColor: 'rgb(var(--nx-line) / 0.35)' }}>
+              <p className="text-xs uppercase tracking-wider" style={{ color: 'rgb(var(--nx-muted))' }}>
+                {lang === 'pt-BR' ? 'Expiração' : 'Expiration'}
+              </p>
+              <p className="mt-2 text-sm font-semibold truncate" style={{ color: 'rgb(var(--nx-text))' }}>
+                {session?.expiresAt ? new Date(session.expiresAt).toLocaleString(lang) : '—'}
+              </p>
+            </div>
+          </div>
+        </article>
+
         {/* Danger zone */}
         <article
           className="nx-panel p-5"

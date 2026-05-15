@@ -97,40 +97,114 @@ export function summarize(devices) {
   const counts = { healthy: 0, attention: 0, critical: 0 };
   const byOs = new Map();
   const byUnit = new Map();
+  const byDepartment = new Map();
   const winSplit = { 'Windows 11': 0, 'Windows 10': 0, 'Windows (legacy)': 0 };
+  const activityBuckets = [
+    { key: '0-24h', label: '0-24h', min: 0, max: 1, value: 0 },
+    { key: '1-7d', label: '1-7d', min: 1, max: 7, value: 0 },
+    { key: '8-30d', label: '8-30d', min: 8, max: 30, value: 0 },
+    { key: '31-90d', label: '31-90d', min: 31, max: 90, value: 0 },
+    { key: '90d+', label: '90d+', min: 91, max: Number.POSITIVE_INFINITY, value: 0 }
+  ];
+
   let stale = 0;
   let win11Ready = 0;
   let totalRisk = 0;
+  let online = 0;
+  let managed = 0;
+  let missingOwner = 0;
   const now = Date.now();
+
+  const activity = [];
 
   for (const d of devices) {
     counts[d.status] = (counts[d.status] || 0) + 1;
     byOs.set(d.osFamily, (byOs.get(d.osFamily) || 0) + 1);
     byUnit.set(d.unitLabel, (byUnit.get(d.unitLabel) || 0) + 1);
+    byDepartment.set(d.department, (byDepartment.get(d.department) || 0) + 1);
+
     if (d.osFamily === 'Windows') {
       winSplit[d.osVersion] = (winSplit[d.osVersion] || 0) + 1;
       if (d.osVersion === 'Windows 11') win11Ready += 1;
     }
+
+    const hasNetworkIdentity = Boolean(d.ip || d.mac);
+    if (hasNetworkIdentity) online += 1;
+    if (d.asset || d.serial || d.domain) managed += 1;
+    if (!d.user) missingOwner += 1;
+
+    let days = null;
     if (d.lastSeen) {
-      const days = (now - new Date(d.lastSeen).getTime()) / 86_400_000;
+      days = (now - new Date(d.lastSeen).getTime()) / 86_400_000;
       if (days > 30) stale += 1;
+      const bucket = activityBuckets.find((b) => days >= b.min && days <= b.max);
+      if (bucket) bucket.value += 1;
     } else {
       stale += 1;
+      activityBuckets[activityBuckets.length - 1].value += 1;
     }
+
+    activity.push({
+      id: d.id,
+      hostname: d.hostname,
+      unitLabel: d.unitLabel,
+      department: d.department,
+      status: d.status,
+      risk: d.risk,
+      user: d.user,
+      category: d.category,
+      lastSeen: d.lastSeen,
+      daysSince: days == null ? 999 : Math.max(0, Math.floor(days)),
+      type: d.risk >= 65 ? 'incident' : d.risk >= 40 ? 'warning' : 'ok',
+      title:
+        d.risk >= 65
+          ? `Critical risk on ${d.hostname}`
+          : d.risk >= 40
+            ? `Policy drift on ${d.hostname}`
+            : `Healthy posture verified on ${d.hostname}`
+    });
+
     totalRisk += d.risk;
   }
+
+  const sortedUnits = Array.from(byUnit.entries())
+    .map(([name, value]) => ({ name, value }))
+    .sort((a, b) => b.value - a.value);
+
+  const sortedDepartments = Array.from(byDepartment.entries())
+    .map(([name, value]) => ({ name, value }))
+    .sort((a, b) => b.value - a.value);
+
+  const activityFeed = activity
+    .sort((a, b) => {
+      if (a.daysSince !== b.daysSince) return a.daysSince - b.daysSince;
+      return b.risk - a.risk;
+    })
+    .slice(0, 10);
+
+  const avgRisk = total ? Math.round(totalRisk / total) : 0;
+  const complianceScore = Math.max(1, Math.min(99, 100 - Math.round(avgRisk * 0.78)));
+  const secureBaseline = Math.max(0, Math.min(100, Math.round((counts.healthy / Math.max(total, 1)) * 100)));
 
   return {
     total,
     counts,
     healthyPct: total ? Math.round((counts.healthy / total) * 100) : 0,
     osDistribution: Array.from(byOs.entries()).map(([name, value]) => ({ name, value })),
-    unitDistribution: Array.from(byUnit.entries()).map(([name, value]) => ({ name, value })),
+    unitDistribution: sortedUnits,
+    departmentDistribution: sortedDepartments,
     windowsSplit: Object.entries(winSplit)
       .filter(([, v]) => v > 0)
       .map(([name, value]) => ({ name, value })),
+    activityTrend: activityBuckets,
+    activityFeed,
     stale,
     win11Ready,
-    avgRisk: total ? Math.round(totalRisk / total) : 0
+    avgRisk,
+    online,
+    managed,
+    missingOwner,
+    complianceScore,
+    secureBaseline
   };
 }

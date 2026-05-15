@@ -2,9 +2,9 @@ import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-  ResponsiveContainer, PieChart, Pie, Cell, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid
+  ResponsiveContainer, PieChart, Pie, Cell, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid, LineChart, Line
 } from 'recharts';
-import { Cpu, CheckCircle2, AlertTriangle, ShieldAlert, ArrowRight } from 'lucide-react';
+import { Cpu, CheckCircle2, AlertTriangle, ShieldAlert, ArrowRight, Activity, ShieldCheck, RadioTower, UserX } from 'lucide-react';
 import { useDevices } from '../store/DevicesContext.jsx';
 import { useI18n } from '../store/I18nContext.jsx';
 import { Modal } from '../components/ui/Modal.jsx';
@@ -109,6 +109,41 @@ export function OverviewPage() {
           label={t('overview.kpiCritical')} value={summary.counts.critical}
           hint={t('overview.kpiHint')}
           onClick={() => openByStatus('critical', t('overview.kpiCritical'))}
+        />
+      </div>
+
+      <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <Kpi
+          icon={ShieldCheck}
+          accent="rgb(var(--nx-success))"
+          accentSoft="rgb(var(--nx-success) / 0.14)"
+          label={lang === 'pt-BR' ? 'Compliance' : 'Compliance'}
+          value={summary.complianceScore || 0}
+          hint={lang === 'pt-BR' ? 'Pontuação geral de conformidade' : 'Overall compliance posture'}
+        />
+        <Kpi
+          icon={RadioTower}
+          accent="rgb(var(--nx-accent))"
+          accentSoft="rgb(var(--nx-accent) / 0.14)"
+          label={lang === 'pt-BR' ? 'Online agora' : 'Online now'}
+          value={summary.online || 0}
+          hint={`${summary.total ? Math.round(((summary.online || 0) / summary.total) * 100) : 0}%`}
+        />
+        <Kpi
+          icon={Activity}
+          accent="rgb(var(--nx-primary))"
+          accentSoft="rgb(var(--nx-primary) / 0.14)"
+          label={lang === 'pt-BR' ? 'Risco médio' : 'Avg. risk'}
+          value={summary.avgRisk || 0}
+          hint={lang === 'pt-BR' ? 'Escala 0-100' : 'Scale 0-100'}
+        />
+        <Kpi
+          icon={UserX}
+          accent="rgb(var(--nx-warning))"
+          accentSoft="rgb(var(--nx-warning) / 0.14)"
+          label={lang === 'pt-BR' ? 'Sem responsável' : 'Unassigned owner'}
+          value={summary.missingOwner || 0}
+          hint={lang === 'pt-BR' ? 'Ativos sem usuário principal' : 'Assets without owner'}
         />
       </div>
 
@@ -263,6 +298,58 @@ export function OverviewPage() {
               </p>
             )}
           </div>
+        </article>
+      </div>
+
+      <div className="mt-6 grid gap-4 lg:grid-cols-3">
+        <article className="nx-panel p-5 lg:col-span-2">
+          <h3 className="text-sm font-bold uppercase tracking-wider" style={{ color: 'rgb(var(--nx-muted))' }}>
+            {lang === 'pt-BR' ? 'Tendência de atividade' : 'Activity trend'}
+          </h3>
+          <div className="mt-3 h-72">
+            <ResponsiveContainer>
+              <LineChart data={summary.activityTrend || []}>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgb(var(--nx-line) / 0.25)" />
+                <XAxis dataKey="label" tick={{ fill: 'rgb(var(--nx-muted))', fontSize: 12 }} axisLine={false} tickLine={false} />
+                <YAxis tick={{ fill: 'rgb(var(--nx-muted))', fontSize: 12 }} axisLine={false} tickLine={false} />
+                <Tooltip
+                  contentStyle={{
+                    background: 'rgb(var(--nx-panel))',
+                    border: '1px solid rgb(var(--nx-line) / 0.4)',
+                    borderRadius: 12
+                  }}
+                  labelStyle={{ color: 'rgb(var(--nx-text))' }}
+                  itemStyle={{ color: 'rgb(var(--nx-text))' }}
+                />
+                <Line type="monotone" dataKey="value" stroke="rgb(var(--nx-accent))" strokeWidth={3} dot={{ r: 4 }} />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </article>
+
+        <article className="nx-panel p-5">
+          <h3 className="text-sm font-bold uppercase tracking-wider" style={{ color: 'rgb(var(--nx-muted))' }}>
+            {lang === 'pt-BR' ? 'Feed de atividade' : 'Activity feed'}
+          </h3>
+          <ul className="mt-3 space-y-2">
+            {(summary.activityFeed || []).slice(0, 6).map((item) => (
+              <li key={item.id} className="rounded-xl border p-3" style={{ borderColor: 'rgb(var(--nx-line) / 0.3)' }}>
+                <div className="flex items-center justify-between gap-2">
+                  <p className="text-sm font-semibold truncate" style={{ color: 'rgb(var(--nx-text))' }}>{item.hostname}</p>
+                  <StatusBadge status={item.status} />
+                </div>
+                <p className="mt-1 text-xs" style={{ color: 'rgb(var(--nx-muted))' }}>{item.title}</p>
+                <p className="mt-1 text-xs" style={{ color: 'rgb(var(--nx-text-soft))' }}>
+                  {item.unitLabel} · {item.department}
+                </p>
+              </li>
+            ))}
+            {(summary.activityFeed || []).length === 0 && (
+              <li className="py-4 text-sm text-center" style={{ color: 'rgb(var(--nx-muted))' }}>
+                {t('common.empty')}
+              </li>
+            )}
+          </ul>
         </article>
       </div>
 

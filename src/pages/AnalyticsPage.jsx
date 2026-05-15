@@ -98,6 +98,32 @@ export function AnalyticsPage() {
     return buckets;
   }, [devices, lang]);
 
+  const riskBands = useMemo(() => {
+    const bands = [
+      { name: lang === 'pt-BR' ? 'Baixo (0-39)' : 'Low (0-39)', value: 0 },
+      { name: lang === 'pt-BR' ? 'Médio (40-64)' : 'Medium (40-64)', value: 0 },
+      { name: lang === 'pt-BR' ? 'Alto (65+)' : 'High (65+)', value: 0 }
+    ];
+    devices.forEach((d) => {
+      if (d.risk >= 65) bands[2].value += 1;
+      else if (d.risk >= 40) bands[1].value += 1;
+      else bands[0].value += 1;
+    });
+    return bands;
+  }, [devices, lang]);
+
+  const executive = useMemo(() => {
+    const total = devices.length || 1;
+    const avgRisk = Math.round(devices.reduce((s, d) => s + d.risk, 0) / total);
+    const healthy = devices.filter((d) => d.status === 'healthy').length;
+    const coverage = Math.round((devices.filter((d) => d.ip || d.mac).length / total) * 100);
+    return {
+      avgRisk: Number.isFinite(avgRisk) ? avgRisk : 0,
+      healthyPct: Math.round((healthy / total) * 100),
+      coverage
+    };
+  }, [devices]);
+
   return (
     <section>
       <header>
@@ -108,6 +134,27 @@ export function AnalyticsPage() {
           {t('analytics.subtitle')}
         </p>
       </header>
+
+      <div className="mt-6 grid gap-4 sm:grid-cols-3">
+        <Panel title={lang === 'pt-BR' ? 'Risco médio' : 'Average risk'}>
+          <p className="text-4xl font-extrabold" style={{ color: 'rgb(var(--nx-text))' }}>{executive.avgRisk}</p>
+          <p className="mt-2 text-xs" style={{ color: 'rgb(var(--nx-muted))' }}>
+            {lang === 'pt-BR' ? 'Escala operacional de 0 a 100' : 'Operational scale from 0 to 100'}
+          </p>
+        </Panel>
+        <Panel title={lang === 'pt-BR' ? 'Postura saudável' : 'Healthy posture'}>
+          <p className="text-4xl font-extrabold" style={{ color: 'rgb(var(--nx-success))' }}>{executive.healthyPct}%</p>
+          <p className="mt-2 text-xs" style={{ color: 'rgb(var(--nx-muted))' }}>
+            {lang === 'pt-BR' ? 'Ativos em status saudável' : 'Assets in healthy status'}
+          </p>
+        </Panel>
+        <Panel title={lang === 'pt-BR' ? 'Cobertura de inventário' : 'Inventory coverage'}>
+          <p className="text-4xl font-extrabold" style={{ color: 'rgb(var(--nx-accent))' }}>{executive.coverage}%</p>
+          <p className="mt-2 text-xs" style={{ color: 'rgb(var(--nx-muted))' }}>
+            {lang === 'pt-BR' ? 'Ativos com identidade de rede' : 'Assets with network identity'}
+          </p>
+        </Panel>
+      </div>
 
       <div className="mt-6 grid gap-4 lg:grid-cols-2">
         <Panel title={t('analytics.riskByUnit')}>
@@ -201,6 +248,22 @@ export function AnalyticsPage() {
               ? `Total analisado: ${formatNumber(devices.length, lang)} dispositivos.`
               : `Analyzed: ${formatNumber(devices.length, lang)} devices.`}
           </p>
+        </Panel>
+
+        <Panel title={lang === 'pt-BR' ? 'Faixas de risco' : 'Risk bands'}>
+          <div className="h-72">
+            <ResponsiveContainer>
+              <PieChart>
+                <Pie data={riskBands} dataKey="value" nameKey="name" innerRadius={42} outerRadius={94} paddingAngle={2} stroke="none">
+                  {riskBands.map((_, i) => (
+                    <Cell key={i} fill={COLORS[(i + 2) % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip contentStyle={TOOLTIP_STYLE} />
+                <Legend verticalAlign="bottom" iconType="circle" wrapperStyle={{ fontSize: 11, color: 'rgb(var(--nx-muted))' }} />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
         </Panel>
       </div>
     </section>

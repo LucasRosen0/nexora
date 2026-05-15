@@ -125,6 +125,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   transition: background-color .3s ease, color .3s ease;
+  line-height: 1.45;
 }
 
 [data-theme='light-clean'] body {
@@ -167,6 +168,8 @@ input::placeholder, textarea::placeholder {
   }
   .nx-card:hover {
     border-color: rgb(var(--nx-primary) / 0.45);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgb(var(--nx-bg) / 0.25);
   }
 
   .nx-input {
@@ -228,4 +231,45 @@ input::placeholder, textarea::placeholder {
 @keyframes shimmer {
   from { background-position: 180% 0; }
   to { background-position: -40% 0; }
+}
+
+@media (max-width: 1024px) {
+  .nx-panel {
+    border-radius: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    background-attachment: scroll;
+  }
+
+  .nx-card {
+    padding: 1rem;
+    border-radius: 1rem;
+  }
+
+  .nx-panel {
+    padding: 1rem;
+  }
+
+  .nx-btn {
+    min-height: 42px;
+  }
+
+  h1 {
+    font-size: 1.6rem !important;
+    line-height: 1.2;
+  }
+}
+
+@media (max-width: 480px) {
+  .nx-chip {
+    font-size: 10px;
+    padding: 4px 8px;
+  }
+
+  .nx-input {
+    padding: 0.625rem 0.75rem;
+  }
 }
