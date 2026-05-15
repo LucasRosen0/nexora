@@ -8,6 +8,7 @@ import { LocationsPage } from './pages/LocationsPage.jsx';
 import { AnalyticsPage } from './pages/AnalyticsPage.jsx';
 import { ReportsPage } from './pages/ReportsPage.jsx';
 import { SettingsPage } from './pages/SettingsPage.jsx';
+import { RegisterPage } from './pages/RegisterPage.jsx';
 
 function RequireAuth({ children }) {
   const { isAuthenticated } = useAuth();
@@ -19,6 +20,7 @@ export function App() {
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
       <Route
         element={
           <RequireAuth>

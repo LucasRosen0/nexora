@@ -5,7 +5,8 @@ function findDataFile() {
   const possiblePaths = [
     path.join(process.cwd(), 'data', 'mock-data.json'),
     path.join(__dirname, '..', '..', 'data', 'mock-data.json'),
-    path.join(__dirname, '..', '..', '..', 'data', 'mock-data.json')
+    path.join(__dirname, '..', '..', '..', 'data', 'mock-data.json'),
+    path.join('/var/task', 'data', 'mock-data.json')
   ];
 
   return possiblePaths.find((filePath) => fs.existsSync(filePath));

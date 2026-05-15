@@ -1,8 +1,7 @@
-import { Menu, Languages, Palette, Sparkles, RefreshCw } from 'lucide-react';
+import { Menu, Languages, Palette, Sparkles } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { useI18n, SUPPORTED_LANGS } from '../../store/I18nContext.jsx';
 import { useTheme, THEMES } from '../../store/ThemeContext.jsx';
-import { useDevices } from '../../store/DevicesContext.jsx';
 
 function Dropdown({ button, children, align = 'right' }) {
   const [open, setOpen] = useState(false);
@@ -39,7 +38,6 @@ function Dropdown({ button, children, align = 'right' }) {
 export function Topbar({ onOpenSidebar, onOpenAssistant }) {
   const { t, lang, setLang } = useI18n();
   const { theme, setTheme } = useTheme();
-  const { reload, loading, health } = useDevices();
 
   return (
     <header
@@ -58,29 +56,9 @@ export function Topbar({ onOpenSidebar, onOpenAssistant }) {
         >
           <Menu size={18} />
         </button>
-        <div className="hidden flex-col sm:flex">
-          <span className="text-xs uppercase tracking-wider" style={{ color: 'rgb(var(--nx-muted))' }}>
-            {t('common.lastSync')}
-          </span>
-          <span className="text-sm font-semibold" style={{ color: 'rgb(var(--nx-text))' }}>
-            {health?.generatedAt
-              ? new Date(health.generatedAt).toLocaleString(lang)
-              : t('common.loading')}
-          </span>
-        </div>
       </div>
 
       <div className="flex items-center gap-2">
-        <button
-          onClick={reload}
-          disabled={loading}
-          className="nx-btn nx-btn-ghost"
-          aria-label="Refresh"
-        >
-          <RefreshCw size={15} className={loading ? 'animate-spin' : ''} />
-          <span className="hidden sm:inline">{t('common.search')}</span>
-        </button>
-
         <Dropdown
           button={<><Languages size={15} />{lang.toUpperCase()}</>}
         >

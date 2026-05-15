@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Eye, EyeOff, ShieldCheck, Sparkles, BarChart3, ChevronRight, Loader2 } from 'lucide-react';
 import { Logo, LogoMark } from '../components/brand/Logo.jsx';
@@ -226,6 +226,17 @@ export function LoginPage() {
               {t('auth.demoNote')}
             </div>
           </form>
+
+          <p className="mt-5 text-center text-sm" style={{ color: 'rgb(var(--nx-muted))' }}>
+            Não tem uma conta?{' '}
+            <Link
+              to="/register"
+              className="font-semibold transition hover:opacity-80"
+              style={{ color: 'rgb(var(--nx-primary))' }}
+            >
+              Criar uma conta
+            </Link>
+          </p>
         </div>
       </section>
     </div>
