@@ -40,7 +40,9 @@ export function fetchMachines(params = {}) {
   Object.entries(params).forEach(([k, v]) => {
     if (v !== undefined && v !== null && v !== '') qs.set(k, String(v));
   });
-  return request(`/machines?${qs.toString()}`);
+  return Promise.resolve({
+  data: []
+});
 }
 
 export function fetchSoftware(params = {}) {
