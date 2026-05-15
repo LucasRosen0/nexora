@@ -13,12 +13,11 @@ export const useDashboardData = () => {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 3000);
 
-        const response = await fetch('/api/machines?limit=5000', { signal: controller.signal });
-        clearTimeout(timeoutId);
+       clearTimeout(timeoutId);
 
-        if (!response.ok) throw new Error('API Offline');
-        
-        const result = await response.json();
+const result = {
+  data: []
+};
 
         // Só desativamos o mock se a API de fato retornar máquinas
         if (result && result.data && result.data.length > 0) {
