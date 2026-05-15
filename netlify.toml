@@ -7,6 +7,11 @@
   included_files = ["data/mock-data.json"]
 
 [[redirects]]
-  from = "/api/health"
-  to = "/.netlify/functions/health"
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
   status = 200
