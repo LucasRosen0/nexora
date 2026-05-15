@@ -6,6 +6,10 @@
   <img src="https://img.shields.io/badge/react-frontend-61DAFB?style=for-the-badge&logo=react"/>
   <img src="https://img.shields.io/badge/node-backend-339933?style=for-the-badge&logo=node.js"/>
   <img src="https://img.shields.io/badge/license-MIT-blue?style=for-the-badge"/>
+
+  <a href="https://nexorasas.netlify.app/">
+    <img src="https://img.shields.io/badge/demo-ver%20projeto-7c3aed?style=for-the-badge"/>
+  </a>
 </p>
 <h1 align="center">Nexora</h1>
 
@@ -164,6 +168,12 @@ git push origin feature/minha-feature
 
 ---
 ---
+
+## 🌐 Demo
+
+O Nexora possui uma versão em produção disponível para testes e visualização da interface completa.
+
+👉 https://nexorasas.netlify.app/
 
 </p>
 # 📄 Licença
